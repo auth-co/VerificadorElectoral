@@ -723,11 +723,13 @@ ipcMain.handle('convertir-pdf-csv-v2', async (event, { archivos, apiKey, modo = 
         let criticalError = null;
         if (code !== 0) {
           criticalError = stderrAccumulado ||
-            `R terminó inesperadamente (código ${code}). Puede que falte Python, falte una dependencia, o R Portable esté dañado.`;
-          if (mainWindow) {
+            `R terminó inesperadamente (código ${code}). Verifica que R Portable esté instalado correctamente.`;
+          // Solo enviar IPC si el error viene de stderr real — si ya se emitió
+          // un evento JSON por stdout (ej: error de Python, API key), no duplicar.
+          if (mainWindow && stderrAccumulado) {
             mainWindow.webContents.send('r-evento', {
               tipo: 'error',
-              mensaje: criticalError
+              mensaje: stderrAccumulado
             });
           }
         }

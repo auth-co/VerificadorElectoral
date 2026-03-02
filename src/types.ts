@@ -1,6 +1,6 @@
 export type Seccion = 'informacion' | 'identificacion' | 'extraccion' | 'comparacion_automatica' | 'comparacion_archivos' | 'comparacion_manual';
 
-export type TipoError = 'api_key' | 'cuota_excedida' | 'rate_limit' | 'conexion' | 'servidor' | 'pdf_corrupto' | 'pdf_no_encontrado' | 'respuesta_ia' | 'imagen_grande' | 'otro';
+export type TipoError = 'api_key' | 'cuota_excedida' | 'rate_limit' | 'conexion' | 'servidor' | 'pdf_corrupto' | 'pdf_no_encontrado' | 'respuesta_ia' | 'imagen_grande' | 'python' | 'otro';
 
 export interface ArchivoExitoso {
   archivo: string;

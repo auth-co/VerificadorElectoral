@@ -61,6 +61,7 @@ export default function App() {
   const [mensajeEstado, setMensajeEstado] = useState('');
   const [mostrarModal, setMostrarModal] = useState(false);
   const [errorDetectado, setErrorDetectado] = useState<{ tipo: TipoError; mensaje: string } | null>(null);
+  const errorDetectadoRef = useRef<{ tipo: TipoError; mensaje: string } | null>(null);
   const canceladoRef = useRef(false);
 
   // Confirmation modal
@@ -179,6 +180,7 @@ export default function App() {
     setConversionCompleta(false);
     setMostrarModal(false);
     setErrorDetectado(null);
+    errorDetectadoRef.current = null;
     canceladoRef.current = false;
 
     if (!esReintento) { setArchivosExitosos([]); setArchivosFallidos([]); setCsvsGenerados([]); }
@@ -207,13 +209,15 @@ export default function App() {
           const errorClasificado = clasificarError(evento.error || 'Error desconocido');
           const prioridadError: Record<TipoError, number> = {
             api_key: 10, cuota_excedida: 9, rate_limit: 8, conexion: 7,
-            servidor: 6, imagen_grande: 5, pdf_corrupto: 4, pdf_no_encontrado: 3,
-            respuesta_ia: 2, otro: 1
+            python: 7, servidor: 6, imagen_grande: 5, pdf_corrupto: 4,
+            pdf_no_encontrado: 3, respuesta_ia: 2, otro: 1
           };
           setErrorDetectado(prev => {
             const prioridadNuevo = prioridadError[errorClasificado.tipo];
             const prioridadActual = prev ? prioridadError[prev.tipo] : 0;
-            return prioridadNuevo >= prioridadActual ? errorClasificado : prev;
+            const resultado = prioridadNuevo >= prioridadActual ? errorClasificado : prev;
+            errorDetectadoRef.current = resultado;
+            return resultado;
           });
           const erroresCancelables: TipoError[] = ['api_key', 'cuota_excedida', 'conexion'];
           if (erroresCancelables.includes(errorClasificado.tipo)) {
@@ -227,6 +231,7 @@ export default function App() {
         }
         case 'error': {
           const errorCritico = clasificarError(evento.mensaje || 'Error desconocido');
+          errorDetectadoRef.current = errorCritico;
           setErrorDetectado(errorCritico);
           setMensajeEstado(errorCritico.mensaje.split('.')[0]);
           window.electronAPI?.cancelarProcesoR();
@@ -264,9 +269,12 @@ export default function App() {
         return;
       }
       // Fix race condition: si R falló pero el error IPC llegó tarde (microtask vs macrotask),
-      // usar criticalError del resolve que siempre llega sincrónicamente con el resultado
-      if (!resultado.success && resultado.criticalError && !errorDetectado) {
-        setErrorDetectado(clasificarError(resultado.criticalError));
+      // usar criticalError del resolve que siempre llega sincrónicamente con el resultado.
+      // Se usa ref (no state) para evitar closure stale — el state puede no haber flushed aún.
+      if (!resultado.success && resultado.criticalError && !errorDetectadoRef.current) {
+        const clasificado = clasificarError(resultado.criticalError);
+        errorDetectadoRef.current = clasificado;
+        setErrorDetectado(clasificado);
         setMostrarModal(true);
         return;
       }
