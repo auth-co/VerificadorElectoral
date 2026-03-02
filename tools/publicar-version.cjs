@@ -204,8 +204,9 @@ step(9, 'Verificando assets publicados en GitHub');
 // Esperar un momento para que GitHub procese los uploads
 execSync('sleep 5');
 
+const ghToken = execSync('gh auth token', { cwd: ROOT, encoding: 'utf8', env: process.env }).trim();
 const releaseInfo = capture(
-  `gh api repos/danielm0101/VerificadorElectoral/releases/tags/${tag}`
+  `curl -sf -H "Authorization: token ${ghToken}" "https://api.github.com/repos/danielm0101/VerificadorElectoral/releases/tags/${tag}"`
 );
 const releaseJson = JSON.parse(releaseInfo);
 const assets = releaseJson.assets || [];
