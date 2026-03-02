@@ -109,7 +109,7 @@ export default function TabIdentificacion({
               className="w-full h-[42px] bg-[#d9d9d9] rounded-[8px] px-3 text-[#40376d] font-['Poppins',sans-serif] focus:outline-none focus:ring-2 focus:ring-[#ffb700] placeholder:text-[#888]"
             />
             <p className="font-['Poppins',sans-serif] text-xs text-[#888] mt-2">
-              API Key de Claude (Anthropic). Se guarda localmente.
+              API Key de OpenAI. Se guarda localmente.
             </p>
           </div>
         </div>
