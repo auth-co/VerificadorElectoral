@@ -59,11 +59,11 @@ async function validate(encryptedScriptsDir, tempBaseDir) {
   // Step 3: Fetch GitHub key fragment via authenticated Worker
   let githubKey;
   try {
-    const primaryHash = getAllDriveHashes(usbResult.drive)[0];
+    const driveHashes = getAllDriveHashes(usbResult.drive);
     const response = await fetchWithTimeout(WORKER_URL, 15000, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: APP_TOKEN, usbHash: primaryHash })
+      body: JSON.stringify({ token: APP_TOKEN, usbHashes: driveHashes })
     });
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
