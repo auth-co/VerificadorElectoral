@@ -136,6 +136,7 @@ const exeSizeMB = (fs.statSync(exePath).size / 1024 / 1024).toFixed(1);
 ok(`${exeName} (${exeSizeMB} MB)`);
 ok(`${exeName}.blockmap`);
 
+
 // ─── PASO 6: Generar latest.yml ──────────────────────────────────────────────
 step(6, 'Generando latest.yml con SHA512 correcto');
 
@@ -204,7 +205,7 @@ step(9, 'Verificando assets publicados en GitHub');
 // Esperar un momento para que GitHub procese los uploads
 execSync('sleep 5');
 
-const ghToken = execSync('gh auth token', { cwd: ROOT, encoding: 'utf8', env: process.env }).trim();
+const ghToken = capture('gh auth token');
 const releaseInfo = capture(
   `curl -sf -H "Authorization: token ${ghToken}" "https://api.github.com/repos/auth-co/VerificadorElectoral/releases/tags/${tag}"`
 );
@@ -226,6 +227,7 @@ ok(`${exeName}.blockmap ✓`);
 // Verificar latest.yml
 if (!assetMap['latest.yml']) fail('latest.yml no encontrado en la release');
 ok(`latest.yml (${assetMap['latest.yml']} bytes) ✓`);
+
 
 // ─── PASO 10: Verificar latest.yml descargable ───────────────────────────────
 step(10, 'Verificando latest.yml descargable desde GitHub');
