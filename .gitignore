@@ -29,6 +29,7 @@ Thumbs.db
 
 # Environment
 .env
+.env.*
 .env.local
 .env.development.local
 .env.test.local
@@ -73,3 +74,9 @@ redirect-registraduria/
 
 # USB registry (sensitive)
 electron/security/registry.json
+
+# Archivos de build alternativos (no commitear)
+tools/publicar-version-cne.cjs
+build/installer-cne.nsh
+src/config/
+src/services/

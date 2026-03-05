@@ -23,7 +23,6 @@
     "security:encrypt": "node tools/encriptar-scripts.cjs",
     "security:publish": "node tools/publicar-registro.cjs --push",
     "release": "node tools/publicar-version.cjs",
-    "release:cne": "node tools/publicar-version-cne.cjs",
     "release:minor": "node tools/publicar-version.cjs --minor",
     "release:major": "node tools/publicar-version.cjs --major",
     "test": "vitest run",
