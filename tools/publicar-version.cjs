@@ -117,9 +117,10 @@ ok(`Versión: ${vOld} → ${vNew}`);
 step(3, 'Encriptando scripts R (por si hubo cambios)');
 run('npm run security:encrypt');
 
-// ─── PASO 4: Build ───────────────────────────────────────────────────────────
-step(4, 'Construyendo instalador Windows');
+// ─── PASO 4: Build (privado + CNE) ───────────────────────────────────────────
+step(4, 'Construyendo instaladores Windows (privado + CNE)');
 run('npm run electron:build -- --win');
+run('npm run electron:build:cne');
 
 // ─── PASO 5: Verificar artefactos ────────────────────────────────────────────
 step(5, 'Verificando artefactos generados');
@@ -135,6 +136,17 @@ if (!fs.existsSync(bmapPath)) fail(`No se encontró el .blockmap: ${bmapPath}`);
 const exeSizeMB = (fs.statSync(exePath).size / 1024 / 1024).toFixed(1);
 ok(`${exeName} (${exeSizeMB} MB)`);
 ok(`${exeName}.blockmap`);
+
+const cneExeName  = `Verificador-CNE-Setup-${vNew}.exe`;
+const cneExePath  = path.join(distDir, cneExeName);
+const cneBmapPath = cneExePath + '.blockmap';
+
+if (!fs.existsSync(cneExePath))  fail(`No se encontró el .exe CNE: ${cneExePath}`);
+if (!fs.existsSync(cneBmapPath)) fail(`No se encontró el .blockmap CNE: ${cneBmapPath}`);
+
+const cneExeSizeMB = (fs.statSync(cneExePath).size / 1024 / 1024).toFixed(1);
+ok(`${cneExeName} (${cneExeSizeMB} MB)`);
+ok(`${cneExeName}.blockmap`);
 
 // ─── PASO 6: Generar latest.yml ──────────────────────────────────────────────
 step(6, 'Generando latest.yml con SHA512 correcto');
@@ -192,6 +204,8 @@ run([
   `"${exePath}"`,
   `"${bmapPath}"`,
   `"${latestYmlPath}"`,
+  `"${cneExePath}"`,
+  `"${cneBmapPath}"`,
   `--title "${tag}"`,
   `--notes "${releaseNotes.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`
 ].join(' '));
@@ -227,6 +241,12 @@ ok(`${exeName}.blockmap ✓`);
 if (!assetMap['latest.yml']) fail('latest.yml no encontrado en la release');
 ok(`latest.yml (${assetMap['latest.yml']} bytes) ✓`);
 
+// Verificar CNE .exe y .blockmap
+if (!assetMap[cneExeName]) fail(`Asset CNE no encontrado en GitHub: ${cneExeName}`);
+ok(`${cneExeName} (${assetMap[cneExeName]} bytes) ✓`);
+if (!assetMap[cneExeName + '.blockmap']) fail(`Asset CNE no encontrado: ${cneExeName}.blockmap`);
+ok(`${cneExeName}.blockmap ✓`);
+
 // ─── PASO 10: Verificar latest.yml descargable ───────────────────────────────
 step(10, 'Verificando latest.yml descargable desde GitHub');
 
@@ -253,7 +273,8 @@ console.log(`║  ✅ v${vNew} publicada correctamente          `);
 console.log('╚══════════════════════════════════════════════╝');
 console.log(`
   Release:  https://github.com/auth-co/VerificadorElectoral/releases/tag/${tag}
-  .exe:     ${exeName} (${exeSizeMB} MB)
+  Privado:  ${exeName} (${exeSizeMB} MB)
+  CNE:      ${cneExeName} (${cneExeSizeMB} MB)
   SHA512:   ${sha512.substring(0, 44)}...
 
   Las apps en v${vOld} recibirán la notificación en ~3 segundos al abrir.
