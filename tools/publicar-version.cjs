@@ -140,6 +140,7 @@ ok(`${exeName}.blockmap`);
 // ─── PASO 6: Generar latest.yml ──────────────────────────────────────────────
 step(6, 'Generando latest.yml con SHA512 correcto');
 
+
 const sha512    = sha512b64(exePath);
 const exeSize   = fs.statSync(exePath).size;
 const releaseTs = new Date().toISOString();
