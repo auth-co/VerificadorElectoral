@@ -36,7 +36,7 @@ export const TAB_BG_CLASSES: Record<Seccion, string> = {
 };
 
 export const URL_REGISTRADURIA = 'https://auth-co.github.io/redirect-registraduria/';
-export const URL_RELEASES = (import.meta.env.VITE_RELEASES_URL as string) || 'https://github.com/auth-co/VerificadorElectoral/releases/latest';
+export const URL_RELEASES = (import.meta.env.VITE_RELEASES_URL as string) || 'https://drive.google.com/drive/folders/145zkQVA74Sa67agG_iTG_SpDEEuaqsiO?usp=sharing';
 
 const _extraTipos = (import.meta.env.VITE_TIPOS_EXTRA as string || '').split(',').filter(Boolean);
 export const TIPOS_ELECCION = ['Senado', 'Camara', 'Consulta', 'CITREP', ..._extraTipos];
