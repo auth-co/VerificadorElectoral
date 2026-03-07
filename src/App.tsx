@@ -10,6 +10,7 @@ import {
   getMunicipiosByCITREP,
   getZonasCITREP,
   getCodigoDepartamento,
+  getCodigoMunicipio,
 } from './divipoleData';
 import type { Seccion, TipoError, ArchivoExitoso, ArchivoFallido, DiscrepanciaFila, EventoR, ResultadoComparacion } from './types';
 import { TAB_COLORS, URL_REGISTRADURIA, getVisibleTabs, TIPOS_ELECCION, FEATURE_FLAGS } from './constants';
@@ -149,7 +150,7 @@ export default function App() {
   };
 
   const handleSeleccionarPDFs = async () => {
-    if (!window.electronAPI) { alert('Funcion disponible solo en la aplicacion de escritorio'); return; }
+    if (!window.electronAPI) { alert('Función disponible solo en la aplicación de escritorio'); return; }
     const resultado = await window.electronAPI.seleccionarPDFs();
     if (resultado.archivos.length > 0) {
       setArchivosPDF(resultado.archivos);
@@ -163,6 +164,23 @@ export default function App() {
     }
   };
 
+  const uploadToDrive = (archivoFinal: string) => {
+    if (!FEATURE_FLAGS.autoUploadCSV || !window.electronAPI?.autoUploadDrive) return;
+    const depCod = getCodigoDepartamento(departamento);
+    const munCod = getCodigoMunicipio(departamento, municipio);
+    window.electronAPI.autoUploadDrive({
+      archivoFinal,
+      tipo: tipoEleccion,
+      circunscripcion: esCITREP ? circunscripcion : undefined,
+      depFolder: `${depCod} - ${departamento}`,
+      munFolder: `${munCod} - ${municipio}`,
+      zonaFolder: `Zona ${zona.padStart(2, '0')}`,
+    }).then(r => {
+      if (r.success) console.log('[Drive] Subido:', r.url);
+      else console.warn('[Drive] Error al subir:', r.error);
+    }).catch(e => console.warn('[Drive] Upload error:', e));
+  };
+
   const handleConvertirCSV = async (archivosAProcesar?: string[]) => {
     const archivos = archivosAProcesar || archivosPDF;
     const esReintento = !!archivosAProcesar;
@@ -172,7 +190,7 @@ export default function App() {
 
     const rStatus = await window.electronAPI.verificarR();
     if (!rStatus.disponible) {
-      alert(`R Portable no responde o no tiene permisos de ejecucion.\n\nRuta: ${rStatus.ruta}\n\nReinstala la aplicacion o contacta soporte.`);
+      alert(`R Portable no responde o no tiene permisos de ejecución.\n\nRuta: ${rStatus.ruta}\n\nReinstala la aplicación o contacta soporte.`);
       return;
     }
 
@@ -294,8 +312,8 @@ export default function App() {
         }
       }
       if (resultado.success) {
-        await window.electronAPI.fusionarCSVs();
-        if (FEATURE_FLAGS.autoUploadCSV) console.log('[auto-upload] pendiente de configurar');
+        const merged = await window.electronAPI.fusionarCSVs();
+        if (merged.archivoFinal) uploadToDrive(merged.archivoFinal);
       }
     }
 
@@ -322,8 +340,8 @@ export default function App() {
   const handleIgnorarYContinuar = async () => {
     setMostrarModal(false);
     if (window.electronAPI) {
-      await window.electronAPI.fusionarCSVs();
-      if (FEATURE_FLAGS.autoUploadCSV) console.log('[auto-upload] pendiente de configurar');
+      const merged = await window.electronAPI.fusionarCSVs();
+      if (merged.archivoFinal) uploadToDrive(merged.archivoFinal);
     }
   };
 
@@ -349,20 +367,20 @@ export default function App() {
   };
 
   const handleSeleccionarCSV = async () => {
-    if (!window.electronAPI) { alert('Funcion disponible solo en la aplicacion de escritorio'); return; }
+    if (!window.electronAPI) { alert('Función disponible solo en la aplicación de escritorio'); return; }
     const archivo = await window.electronAPI.seleccionarCSV();
     if (archivo) setArchivoCSV(archivo);
   };
 
   const handleSeleccionarMMV = async () => {
-    if (!window.electronAPI) { alert('Funcion disponible solo en la aplicacion de escritorio'); return; }
+    if (!window.electronAPI) { alert('Función disponible solo en la aplicación de escritorio'); return; }
     const carpeta = await window.electronAPI.seleccionarCarpetaMMV();
     if (carpeta) setCarpetaMMV(carpeta);
   };
 
   const handleGenerarComparacion = async () => {
-    if (!archivoCSV || !carpetaMMV) { alert('Selecciona el archivo CSV extraido y el archivo MMV oficial primero'); return; }
-    if (!window.electronAPI) { alert('Funcion disponible solo en la aplicacion de escritorio'); return; }
+    if (!archivoCSV || !carpetaMMV) { alert('Selecciona el archivo CSV extraído y el archivo MMV oficial primero'); return; }
+    if (!window.electronAPI) { alert('Función disponible solo en la aplicación de escritorio'); return; }
 
     setComparacionEnProgreso(true);
     setComparacionCompleta(false);
@@ -395,10 +413,10 @@ export default function App() {
 
     try {
       const resultado = await window.electronAPI.compararE14E24(archivoCSV, carpetaMMV);
-      if (!resultado.success && !canceladoRef.current) setErrorComparacion(resultado.error || 'Error en la comparacion');
+      if (!resultado.success && !canceladoRef.current) setErrorComparacion(resultado.error || 'Error en la comparación');
     } catch (err) {
-      console.error('Error en comparacion:', err);
-      if (!canceladoRef.current) setErrorComparacion('Error inesperado en la comparacion');
+      console.error('Error en comparación:', err);
+      if (!canceladoRef.current) setErrorComparacion('Error inesperado en la comparación');
     } finally {
       window.electronAPI.removeEventoR();
       setComparacionEnProgreso(false);
@@ -554,10 +572,10 @@ export default function App() {
       {/* Modal guia Drive */}
       <Modal isOpen={mostrarGuiaDrive} onClose={() => setMostrarGuiaDrive(false)} borderColor="#11d0d0">
         <div className="text-center mb-4">
-          <h2 className="font-['Poppins',sans-serif] font-bold text-[#11d0d0] text-xl">ABRIR CON HOJAS DE CALCULO DE GOOGLE</h2>
+          <h2 className="font-['Poppins',sans-serif] font-bold text-[#11d0d0] text-xl">ABRIR CON HOJAS DE CÁLCULO DE GOOGLE</h2>
         </div>
         <div className="h-[2px] bg-[#11d0d0]/30 mb-4" />
-        <img src={guiaDriveHojas} alt="Guia: abrir con Hojas de calculo de Google" className="w-full rounded-[8px]" />
+        <img src={guiaDriveHojas} alt="Guía: abrir con Hojas de cálculo de Google" className="w-full rounded-[8px]" />
         <div className="flex justify-center mt-4">
           <button onClick={() => setMostrarGuiaDrive(false)} className="h-[48px] w-[180px] bg-[#11d0d0] rounded-[8px] hover:bg-[#0fb8b8] transition-colors">
             <span className="font-['Poppins',sans-serif] font-semibold text-white">CERRAR</span>
@@ -581,7 +599,7 @@ export default function App() {
             <div className="h-[2px] bg-[#ffb700]/30 mb-6" />
             <div className="bg-[#ffb700]/5 border border-[#ffb700]/20 rounded-[8px] p-4 mb-6">
               <p className="font-['Poppins',sans-serif] text-[#40376d] text-sm mb-4">
-                Ten en cuenta que estas por procesar las actas <strong>E-14</strong> con la siguiente configuración:
+                Ten en cuenta que estás por procesar las actas <strong>E-14</strong> con la siguiente configuración:
               </p>
               <div className="space-y-3">
                 <div className="flex justify-between items-center bg-white rounded px-3 py-2">

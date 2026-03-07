@@ -39,16 +39,16 @@ export default function TabIdentificacion({
           <div className="flex items-center gap-3 mb-4">
             <StepBadge number={1} />
             <p className="font-['Poppins',sans-serif] font-medium text-[#40376d] text-lg">
-              Escoge el tipo de eleccion que te fue asignado.
+              Escoge el tipo de elección que te fue asignado.
             </p>
           </div>
           <p className="font-['Poppins',sans-serif] italic text-[#40376d] text-base mb-6 ml-14">
-            Guiate con el nombre de los archivos en la carpeta.
+            Guíate con el nombre de los archivos en la carpeta.
           </p>
 
           <div className="space-y-4">
             <div>
-              <label className="font-['Poppins',sans-serif] font-semibold text-[#40376d] text-lg block mb-2">TIPO DE ELECCION</label>
+              <label className="font-['Poppins',sans-serif] font-semibold text-[#40376d] text-lg block mb-2">TIPO DE ELECCIÓN</label>
               <select value={tipoEleccion} onChange={(e) => onTipoEleccion(e.target.value)} className={selectClass}>
                 <option value="">Seleccionar...</option>
                 {tiposEleccion.map((tipo) => <option key={tipo} value={tipo}>{tipo}</option>)}
@@ -57,7 +57,7 @@ export default function TabIdentificacion({
 
             {esCITREP && (
               <div>
-                <label className="font-['Poppins',sans-serif] font-semibold text-[#40376d] text-lg block mb-2">CIRCUNSCRIPCION</label>
+                <label className="font-['Poppins',sans-serif] font-semibold text-[#40376d] text-lg block mb-2">CIRCUNSCRIPCIÓN</label>
                 <select value={circunscripcion} onChange={(e) => onCircunscripcion(e.target.value)} disabled={!tipoEleccion} className={selectClass}>
                   <option value="">Seleccionar...</option>
                   {circunscripcionesCITREP.map((circ) => <option key={circ} value={circ}>{circ}</option>)}

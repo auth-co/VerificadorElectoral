@@ -26,7 +26,7 @@ export default function TabInformacion({
         {/* COLUMNA 1: Contexto */}
         <div>
           <p className="font-['Poppins',sans-serif] text-[#40376d] text-base leading-relaxed mb-4">
-            La verificacion electoral consiste en comparar los formatos e-14 con los formatos e-24 para comprobar si existe algun tipo de inconsistencia.
+            La verificación electoral consiste en comparar los formatos e-14 con los formatos e-24 para comprobar si existe algún tipo de inconsistencia.
           </p>
 
           <button
@@ -37,16 +37,16 @@ export default function TabInformacion({
           </button>
 
           <p className="font-['Poppins',sans-serif] text-[#40376d] text-base mb-3">
-            Este proceso esta divido en dos fases:
+            Este proceso está dividido en dos fases:
           </p>
 
           <p className="font-['Poppins',sans-serif] font-bold text-[#ff5a5a] text-lg mb-2">FASE 1</p>
 
           <p className="font-['Poppins',sans-serif] font-bold text-[#40376d] text-base mb-1">
-            Comparacion automatica:
+            Comparación automática:
           </p>
           <p className="font-['Poppins',sans-serif] text-[#40376d] text-base leading-relaxed mb-4">
-            un software lee la informacion de cada uno de los formatos, unifica la informacion en un archivo, compara y muestra si hay alguna diferencia de votos.
+            un software lee la información de cada uno de los formatos, unifica la información en un archivo, compara y muestra si hay alguna diferencia de votos.
           </p>
 
           <p className="font-['Poppins',sans-serif] text-[#40376d] text-base mb-3">
@@ -54,11 +54,11 @@ export default function TabInformacion({
           </p>
 
           <p className="font-['Poppins',sans-serif] font-semibold text-[#11d0d0] text-base mb-2">
-            1. Solicita al lider que te indique:
+            1. Solicita al líder que te indique:
           </p>
           <ul className="font-['Poppins',sans-serif] text-[#40376d] text-base space-y-1 list-disc list-inside ml-1">
-            <li>Cuales zonas te corresponden verificar</li>
-            <li>Cual Key te asignaron</li>
+            <li>Cuáles zonas te corresponden verificar</li>
+            <li>Cuál Key te asignaron</li>
           </ul>
         </div>
 
@@ -73,7 +73,7 @@ export default function TabInformacion({
               <span className="text-white font-bold text-sm">!</span>
             </div>
             <p className="font-['Poppins',sans-serif] text-[#40376d] text-base italic leading-relaxed">
-              Inicia con el Opción A, solamente si el lider lo indica, de lo contrario continua con la opción B.
+              Inicia con la Opción A, solamente si el líder lo indica, de lo contrario continúa con la opción B.
             </p>
           </div>
 
@@ -95,7 +95,7 @@ export default function TabInformacion({
             {opcionAAbierta && (
               <div className="px-4 pb-4 border-t border-[#11d0d0]/30">
                 <ul className="font-['Poppins',sans-serif] text-[#40376d] text-base space-y-3 mt-3">
-                  <li>· Descarga la carpeta del Drive con el nombre de las zonas que te fueron asignadas. Guardala de manera que la puedas encontrar facilmente.</li>
+                  <li>· Descarga la carpeta del Drive con el nombre de las zonas que te fueron asignadas. Guárdala de manera que la puedas encontrar fácilmente.</li>
                   <li>· Ingresa a la página de la registraduría ... (Ubicación) y descarga todas las E-14 de las zonas que te corresponden. Guardarlas en la carpeta que descargaste anteriormente.</li>
                   <li>· Sube la carpeta al drive con los formatos E-14 que guardaste.</li>
                   <li>· Ten en cuenta que estas son las carpetas que vas a utilizar en los siguientes pasos.</li>
@@ -107,7 +107,7 @@ export default function TabInformacion({
           <div>
             <p className="font-['Poppins',sans-serif] font-bold text-[#11d0d0] text-base mb-2">OPCIÓN B</p>
             <p className="font-['Poppins',sans-serif] text-[#40376d] text-base leading-relaxed">
-              Descarga las carpetas E-14 de las zonas que te fueron asignadas por el lider. Estas carpetas se encuentran en (DRIVE)
+              Descarga las carpetas E-14 de las zonas que te fueron asignadas por el líder. Estas carpetas se encuentran en (DRIVE)
             </p>
           </div>
         </div>

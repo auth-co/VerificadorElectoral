@@ -123,6 +123,14 @@ declare global {
       onUpdateDownloaded: (callback: (data: { version: string }) => void) => void;
       onUpdateError?: (callback: (data: { message: string }) => void) => void;
       removeUpdateListeners: () => void;
+      autoUploadDrive: (params: {
+        archivoFinal: string;
+        tipo: string;
+        circunscripcion?: string;
+        depFolder: string;
+        munFolder: string;
+        zonaFolder: string;
+      }) => Promise<{ success: boolean; url?: string; error?: string }>;
     };
   }
 }

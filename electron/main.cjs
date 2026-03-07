@@ -1129,3 +1129,13 @@ ipcMain.handle('comparar-e14-e24', async (event, archivoCSV, archivoMMV, carpeta
   });
 });
 
+ipcMain.handle('auto-upload-drive', async (event, params) => {
+  try {
+    const { uploadToCorrectFolder } = require('./drive-upload.cjs');
+    return await uploadToCorrectFolder(params.archivoFinal, params);
+  } catch (err) {
+    console.error('[Drive] Error completo:', err);
+    return { success: false, error: err.message || JSON.stringify(err) };
+  }
+});
+

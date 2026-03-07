@@ -25,12 +25,12 @@ export default function SecurityOverlay({ status, message }: SecurityOverlayProp
   };
 
   const messages: Record<string, string> = {
-    no_usb: 'Esta aplicacion requiere una llave USB autorizada para funcionar. Inserte la USB y reinicie la aplicacion.',
-    usb_no_autorizada: 'La USB insertada no esta registrada como llave autorizada. Contacte al administrador del sistema.',
-    llave_invalida: 'La llave de seguridad en la USB es invalida o los archivos estan corruptos. Contacte al administrador.',
-    usb_expirada: 'La autorizacion de esta USB ha expirado. Contacte al administrador para renovar su acceso.',
-    sin_conexion: 'Se requiere conexion a internet para verificar la llave USB. Conectese a internet y reinicie la aplicacion.',
-    registro_corrupto: 'El registro de USBs autorizadas tiene una firma invalida. Contacte al administrador del sistema.',
+    no_usb: 'Esta aplicación requiere una llave USB autorizada para funcionar. Inserte la USB y reinicie la aplicación.',
+    usb_no_autorizada: 'La USB insertada no está registrada como llave autorizada. Contacte al administrador del sistema.',
+    llave_invalida: 'La llave de seguridad en la USB es inválida o los archivos están corruptos. Contacte al administrador.',
+    usb_expirada: 'La autorización de esta USB ha expirado. Contacte al administrador para renovar su acceso.',
+    sin_conexion: 'Se requiere conexión a internet para verificar la llave USB. Conéctese a internet y reinicie la aplicación.',
+    registro_corrupto: 'El registro de USBs autorizadas tiene una firma inválida. Contacte al administrador del sistema.',
   };
 
   return (
@@ -52,7 +52,7 @@ export default function SecurityOverlay({ status, message }: SecurityOverlayProp
         )}
         <div className="mt-8 py-3 px-6 bg-[#40376d] rounded-lg inline-block">
           <p className="font-['Poppins',sans-serif] text-[#ffb700] text-sm font-semibold">
-            Cierre y vuelva a abrir la aplicacion despues de corregir el problema.
+            Cierre y vuelva a abrir la aplicación después de corregir el problema.
           </p>
         </div>
       </div>

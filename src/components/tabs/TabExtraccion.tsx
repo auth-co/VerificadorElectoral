@@ -58,7 +58,7 @@ export default function TabExtraccion({
           <div className="flex items-center gap-3 mb-4">
             <StepBadge number={3} color="#11d0d0" />
             <p className="font-['Poppins',sans-serif] font-medium text-[#40376d] text-lg">
-              Selecciona la carpeta donde estan los archivos PDF de las E-14 y conviertelos a CSV.
+              Selecciona la carpeta donde están los archivos PDF de las E-14 y conviértelos a CSV.
             </p>
           </div>
 
@@ -129,12 +129,12 @@ export default function TabExtraccion({
                   ))}
                   {archivosPDF.length > 8 && (
                     <p className="font-['Inter',sans-serif] text-xs text-[#a2a2a2] ml-4">
-                      ... y {archivosPDF.length - 8} archivos mas
+                      ... y {archivosPDF.length - 8} archivos más
                     </p>
                   )}
                 </div>
                 <p className="font-['Poppins',sans-serif] text-[#40376d] text-xs mt-4">
-                  Se procesaran en {Math.ceil(archivosPDF.length / 50)} lote(s) de 50 PDFs
+                  Se procesarán en {Math.ceil(archivosPDF.length / 50)} lote(s) de 50 PDFs
                 </p>
               </div>
             )}
@@ -217,7 +217,7 @@ export default function TabExtraccion({
           {departamento && municipio && (
             <div className="bg-[#11d0d0]/10 rounded-[8px] p-4 border border-[#11d0d0]/30 mb-6 mt-6">
               <p className="font-['Poppins',sans-serif] text-sm text-[#40376d] font-semibold mb-3">
-                GUIA PARA FILTRAR EN REGISTRADURIA:
+                GUÍA PARA FILTRAR EN REGISTRADURÍA:
               </p>
               <div className="space-y-2 text-sm font-['Inter',sans-serif]">
                 <div className="flex justify-between items-center bg-white/50 rounded px-2 py-1">

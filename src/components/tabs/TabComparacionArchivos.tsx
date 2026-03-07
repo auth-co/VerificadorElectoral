@@ -38,7 +38,7 @@ export default function TabComparacionArchivos({
               </p>
             </div>
             <p className="font-['Poppins',sans-serif] text-[#ff5a5a] text-base italic leading-relaxed ml-1">
-              La persona que se encargó de la preparación te indicará cuando los archivos se encuentren subidos en la carpeta.
+              La persona que se encargó de la preparación te indicará cuándo los archivos se encuentren subidos en la carpeta.
             </p>
           </div>
 
@@ -104,7 +104,7 @@ export default function TabComparacionArchivos({
           <div className="flex items-center gap-3 mb-4">
             <StepBadge number={3} color="#ff5a5a" />
             <p className="font-['Poppins',sans-serif] font-medium text-[#40376d] text-lg">
-              Crea el archivo de comparacion.
+              Crea el archivo de comparación.
             </p>
           </div>
 
@@ -167,7 +167,7 @@ export default function TabComparacionArchivos({
                 <span className="font-['Poppins',sans-serif] font-medium text-lg text-black">DESCARGAR</span>
               </button>
               <p className="font-['Poppins',sans-serif] text-[#ff5a5a] text-sm leading-relaxed">
-                Avisale a la persona con la zona asignada, que ya se encuentra el archivo de comparación listo para realizar la verificación manual.
+                Avísale a la persona con la zona asignada, que ya se encuentra el archivo de comparación listo para realizar la verificación manual.
               </p>
             </div>
           )}
@@ -214,11 +214,11 @@ export default function TabComparacionArchivos({
           <div className="flex gap-4 mt-2 text-xs font-['Poppins',sans-serif]">
             <span className="flex items-center gap-1">
               <span className="inline-block w-3 h-3 bg-red-200 rounded"></span>
-              <span className="text-red-700">Rojo: Registraduria reporta MAS votos</span>
+              <span className="text-red-700">Rojo: Registraduría reporta MÁS votos</span>
             </span>
             <span className="flex items-center gap-1">
               <span className="inline-block w-3 h-3 bg-blue-200 rounded"></span>
-              <span className="text-blue-700">Azul: Registraduria reporta MENOS votos</span>
+              <span className="text-blue-700">Azul: Registraduría reporta MENOS votos</span>
             </span>
           </div>
         </div>

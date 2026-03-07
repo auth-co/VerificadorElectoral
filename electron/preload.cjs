@@ -67,6 +67,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.removeAllListeners('update-error');
   },
 
+  // Google Drive auto-upload
+  autoUploadDrive: (params) => ipcRenderer.invoke('auto-upload-drive', params),
+
   // Info del sistema
   plataforma: process.platform,
   version: process.versions.electron

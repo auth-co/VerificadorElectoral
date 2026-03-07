@@ -1,0 +1,14 @@
+{
+  "_instrucciones": "Copiar como drive-config.json y rellenar con la cuenta de servicio real",
+  "rootFolderId": "18xgI9wMYrGA4DlMcprTMb1NzSZyWF24o",
+  "serviceAccountKey": {
+    "type": "service_account",
+    "project_id": "...",
+    "private_key_id": "...",
+    "private_key": "-----BEGIN RSA PRIVATE KEY-----\n...",
+    "client_email": "...",
+    "client_id": "...",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token"
+  }
+}

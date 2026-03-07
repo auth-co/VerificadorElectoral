@@ -79,6 +79,9 @@ electron/security/registry.json.bak
 # GitHub token (NEVER commit)
 github_token.txt
 
+# Google Drive service account credentials (NEVER commit)
+drive-config.json
+
 # Archivos de build alternativos (no commitear)
 tools/publicar-version-cne.cjs
 build/installer-cne.nsh

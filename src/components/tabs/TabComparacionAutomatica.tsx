@@ -20,7 +20,7 @@ export default function TabComparacionAutomatica({
               <span className="font-['Poppins',sans-serif] font-bold text-white text-xl">1.</span>
             </div>
             <p className="font-['Poppins',sans-serif] font-semibold text-[#ff5a5a] text-lg leading-relaxed mt-1">
-              Indicale al concatenador que ya se encuentran los documentos en el DRIVE, para realizar el proceso de comparacion automatica.
+              Indícale al concatenador que ya se encuentran los documentos en el DRIVE, para realizar el proceso de comparación automática.
             </p>
           </div>
 
@@ -30,13 +30,13 @@ export default function TabComparacionAutomatica({
             </div>
             <div>
               <p className="font-['Poppins',sans-serif] text-[#ff5a5a] text-lg leading-relaxed">
-                El concatenador subira al drive el archivo
+                El concatenador subirá al drive el archivo
               </p>
               <p className="font-['Poppins',sans-serif] font-bold text-[#40376d] text-xl tracking-wide">
                 COMPRARACION_MIGA_DE_PAN
               </p>
               <p className="font-['Poppins',sans-serif] font-semibold text-[#ff5a5a] text-lg leading-relaxed mt-3">
-                Este es el archivo que debes &nbsp;usar en la fase de comparacion manual:
+                Este es el archivo que debes &nbsp;usar en la fase de comparación manual:
               </p>
             </div>
           </div>
@@ -51,7 +51,7 @@ export default function TabComparacionAutomatica({
                 onClick={onMostrarGuiaDrive}
                 className="font-['Poppins',sans-serif] text-[#11d0d0] text-base italic hover:underline transition-colors cursor-pointer mt-1"
               >
-                ¿Cómo abrir el doc en "hojas de calculo de google"?
+                ¿Cómo abrir el doc en "hojas de cálculo de Google"?
               </button>
             </div>
           </div>
@@ -66,7 +66,7 @@ export default function TabComparacionAutomatica({
               <Checkbox
                 checked={checkMigaPan}
                 onChange={onCheckMigaPan}
-                label='Archivo COMPARACIÓN_MIGA_DE_PAN abierto en "hojas de calculo de google"'
+                label='Archivo COMPARACIÓN_MIGA_DE_PAN abierto en "hojas de cálculo de Google"'
                 accentColor="#ff5a5a"
               />
             </div>
