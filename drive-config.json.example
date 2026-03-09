@@ -1,0 +1,8 @@
+{
+  "rootFolderId": "ID_DE_LA_CARPETA_RAIZ_EN_DRIVE",
+  "oauth2": {
+    "client_id": "TU_CLIENT_ID.apps.googleusercontent.com",
+    "client_secret": "TU_CLIENT_SECRET",
+    "refresh_token": "TU_REFRESH_TOKEN"
+  }
+}
