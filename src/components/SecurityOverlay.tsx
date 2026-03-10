@@ -18,9 +18,9 @@ export default function SecurityOverlay({ status, message }: SecurityOverlayProp
   const titles: Record<string, string> = {
     no_usb: 'INSERTE LA LLAVE USB',
     usb_no_autorizada: 'USB NO AUTORIZADA',
-    llave_invalida: 'LLAVE INVALIDA',
+    llave_invalida: 'LLAVE INVÁLIDA',
     usb_expirada: 'USB EXPIRADA',
-    sin_conexion: 'SIN CONEXION',
+    sin_conexion: 'SIN CONEXIÓN',
     registro_corrupto: 'ERROR DE REGISTRO',
   };
 

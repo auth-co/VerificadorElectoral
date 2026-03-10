@@ -1,6 +1,6 @@
 {
   "name": "verificador-electoral",
-  "version": "1.0.58",
+  "version": "1.0.59",
   "description": "Sistema de Verificación Electoral - E14 y E24 - Consejo Nacional Electoral de Colombia",
   "main": "electron/main.cjs",
   "author": {

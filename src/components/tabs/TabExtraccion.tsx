@@ -78,7 +78,7 @@ export default function TabExtraccion({
           <div className="bg-[rgba(17,208,208,0.08)] rounded-[8px] p-4 w-full min-h-[120px] max-h-[250px] overflow-y-auto mt-4">
             {archivosPDF.length === 0 && !conversionEnProgreso && !conversionCompleta && (
               <p className="font-['Poppins',sans-serif] text-[#a2a2a2] text-sm text-center mt-4">
-                Selecciona una carpeta con archivos PDF para ver el progreso aqui.
+                Selecciona una carpeta con archivos PDF para ver el progreso aquí.
               </p>
             )}
 
@@ -119,7 +119,7 @@ export default function TabExtraccion({
                 </p>
                 {archivoActual ? (
                   <div className="flex items-center gap-2 p-2 bg-white rounded-[6px] mb-3">
-                    <span className="font-['Inter',sans-serif] text-xs text-[#888]">Ultimo:</span>
+                    <span className="font-['Inter',sans-serif] text-xs text-[#888]">Último:</span>
                     <span className="font-['Inter',sans-serif] text-sm text-[#11d0d0] truncate">{archivoActual}</span>
                   </div>
                 ) : loteInfo.actual > 0 && (

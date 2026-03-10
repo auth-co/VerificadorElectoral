@@ -41,7 +41,7 @@ export default function TabComparacionManual({ onAbrirRegistraduria, onAbrirEvid
           <p className="font-['Poppins',sans-serif] font-semibold text-[#d3c4d1] text-3xl leading-none">4.</p>
           <div>
             <p className="font-['Poppins',sans-serif] font-medium text-[#40376d] text-base mt-1">
-              Verifica que el dato de la columna "VOTOS_ E14" corresponde con el que se encuentra en la E-14 que estás revisando.
+              Verifica que el dato de la columna "VOTOS_E14" corresponde con el que se encuentra en la E-14 que estás revisando.
             </p>
             <p className="font-['Poppins',sans-serif] font-semibold text-[#ff6e6e] text-base mt-4">Si no corresponde:</p>
             <p className="font-['Poppins',sans-serif] text-[#40376d] text-base mt-1">
