@@ -14,26 +14,46 @@ const KEY_FILE = 'llave.key';
 const KEY_SIZE = 16; // 128 bits (USB fragment; combined with GitHub fragment via HKDF for 256-bit key)
 
 /**
- * Get all removable drives on Windows via PowerShell (primary) with wmic fallback.
- * PowerShell uses Get-CimInstance which is the modern replacement for wmic
- * (wmic was deprecated in Windows 11 21H2+).
+ * Get all removable drives on Windows.
+ *
+ * Strategy (ordered by AV-friendliness):
+ * 1. vol scan (CMD built-in, no child processes with suspicious flags)
+ * 2. wmic fallback (if vol finds nothing — legacy Windows 10)
+ * 3. PowerShell last resort (only if both above fail)
+ *
+ * PowerShell is intentionally deprioritized: spawning powershell.exe triggers
+ * behavior-monitoring heuristics in enterprise AV (Trend Micro Apex One, etc.).
+ * The vol scan is sufficient for our use case since we only need drives that
+ * already contain the security key file.
+ *
  * @returns {{ deviceId: string, serial: string, extraSerials: string[] }[]}
  */
 function getRemovableDrivesWindows() {
-  // Try PowerShell first (works on Windows 10+ and Windows 11)
+  // Primary: scan drive letters using CMD vol (no PowerShell, no WMI)
   try {
-    return getRemovableDrivesPS();
+    const drives = getRemovableDrivesScan();
+    if (drives.length > 0) return drives;
   } catch (err) {
-    console.warn('PowerShell deteccion fallida, intentando wmic:', err.message);
+    console.warn('Vol scan fallido, intentando wmic:', err.message);
   }
 
-  // Fallback: wmic (deprecated but may still exist on Windows 10)
+  // Fallback: wmic (works on Windows 10 without PowerShell)
   try {
-    return getRemovableDrivesWmic();
+    const drives = getRemovableDrivesWmic();
+    if (drives.length > 0) return drives;
   } catch (err) {
-    console.error('wmic deteccion tambien fallida:', err.message);
-    return [];
+    console.warn('wmic deteccion fallida, intentando PowerShell:', err.message);
   }
+
+  // Last resort: PowerShell Get-CimInstance (Windows 10/11, may trigger AV heuristics)
+  try {
+    const drives = getRemovableDrivesPS();
+    if (drives.length > 0) return drives;
+  } catch (err) {
+    console.warn('PowerShell deteccion fallida:', err.message);
+  }
+
+  return [];
 }
 
 /**
@@ -84,6 +104,40 @@ function getRemovableDrivesWmic() {
         drives.push({ deviceId, serial, extraSerials: [] });
       }
     }
+  }
+  return drives;
+}
+
+/**
+ * Last-resort fallback: scan all drive letters (A-Z) and use the built-in
+ * `vol` command to get the volume serial number.
+ * Works on ALL Windows versions without PowerShell or WMI.
+ * Only returns drives where the security key file is accessible.
+ * @returns {{ deviceId: string, serial: string, extraSerials: string[] }[]}
+ */
+function getRemovableDrivesScan() {
+  const drives = [];
+  for (let code = 65; code <= 90; code++) {
+    const letter = String.fromCharCode(code);
+    const deviceId = letter + ':';
+    const root = letter + ':\\';
+    try {
+      if (!fs.existsSync(root)) continue;
+
+      // Only include drives that have the key file to avoid scanning all fixed disks
+      const keyPath = path.join(deviceId, KEY_FOLDER, KEY_FILE);
+      if (!fs.existsSync(keyPath)) continue;
+
+      // vol X: is a built-in CMD command, always available on Windows
+      let serial = '';
+      try {
+        const volOut = execSync(`vol ${deviceId}`, { encoding: 'utf8', timeout: 3000 });
+        const m = volOut.match(/[Ss]erial [Nn]umber is ([0-9A-Fa-f-]+)/);
+        if (m) serial = m[1].replace(/-/g, '').toUpperCase();
+      } catch (_) {}
+
+      drives.push({ deviceId, serial, extraSerials: [] });
+    } catch (_) {}
   }
   return drives;
 }

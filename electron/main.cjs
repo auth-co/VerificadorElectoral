@@ -250,20 +250,10 @@ function setupAutoUpdater() {
   // certificado de code signing comercial.
   autoUpdater.verifyUpdateCodeSignature = false;
 
-  // Excluir de Defender: userData, Updates, y el directorio temp del sistema
-  // (electron-updater descarga a temp aunque se configure cachePath)
-  if (process.platform === 'win32') {
-    const { exec } = require('child_process');
-    const os = require('os');
-    const userDataDir = app.getPath('userData');
-    const tempDir = os.tmpdir();
-    const carpetaExtraccion = obtenerCarpetaSalida();
-    const carpetaComparacion = obtenerCarpetaComparacion();
-    const cmd = `powershell.exe -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -Command "try { Add-MpPreference -ExclusionPath '${userDataDir}' -Force -ErrorAction SilentlyContinue; Add-MpPreference -ExclusionPath '${updatesDir}' -Force -ErrorAction SilentlyContinue; Add-MpPreference -ExclusionPath '${tempDir}' -Force -ErrorAction SilentlyContinue; Add-MpPreference -ExclusionPath '${carpetaExtraccion}' -Force -ErrorAction SilentlyContinue; Add-MpPreference -ExclusionPath '${carpetaComparacion}' -Force -ErrorAction SilentlyContinue } catch {}"`;
-    exec(cmd, () => {
-      console.log('[updater] Exclusiones de Defender aplicadas para:', userDataDir, '|', carpetaExtraccion, '|', carpetaComparacion);
-    });
-  }
+  // Nota: Add-MpPreference (Windows Defender) fue eliminado — no tiene efecto
+  // en entornos con antivirus corporativo (ej: Trend Micro Apex One) y además
+  // el patrón powershell -ExecutionPolicy Bypass dispara heurísticas de AV.
+  // Las exclusiones necesarias deben configurarse desde la consola del antivirus.
 
   autoUpdater.on('checking-for-update', () => {
     console.log('[updater] Buscando actualizaciones...');

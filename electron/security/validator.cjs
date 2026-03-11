@@ -160,9 +160,27 @@ async function validate(encryptedScriptsDir, tempBaseDir) {
     decryptAllFiles(encryptedScriptsDir, tempDir, fullKey);
   } catch (err) {
     cleanupTempDir(tempDir);
+    console.error('Error en decryptAllFiles:', err.message);
+
+    // Distinguir error de clave incorrecta (AES-GCM auth fail) vs error de filesystem
+    const isAuthError = err.message && (
+      err.message.includes('Unsupported state') ||
+      err.message.includes('unable to authenticate') ||
+      err.message.includes('corrupto')
+    );
+    const isFilesystemError = err.code && ['ENOENT', 'EACCES', 'EPERM', 'EBUSY'].includes(err.code);
+
+    if (isFilesystemError) {
+      return {
+        status: 'llave_invalida',
+        message: `Error de acceso al sistema de archivos (${err.code}): ${err.message}. Verifique permisos o Windows Defender.`
+      };
+    }
     return {
       status: 'llave_invalida',
-      message: 'Error desencriptando: la llave USB no corresponde a esta versión de la aplicación.'
+      message: isAuthError
+        ? 'Error desencriptando: la llave USB no corresponde a esta versión de la aplicación.'
+        : `Error desencriptando: ${err.message}`
     };
   }
 
