@@ -60,14 +60,40 @@ async function validate(encryptedScriptsDir, tempBaseDir) {
   let githubKey;
   try {
     const driveHashes = getAllDriveHashes(usbResult.drive);
-    const response = await fetchWithTimeout(WORKER_URL, 15000, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: APP_TOKEN, usbHashes: driveHashes })
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+    console.log('Enviando', driveHashes.length, 'hashes al Worker...');
+    let response;
+    try {
+      response = await fetchWithTimeout(WORKER_URL, 15000, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: APP_TOKEN, usbHashes: driveHashes })
+      });
+    } catch (networkErr) {
+      // Network-level failure (no internet, DNS, firewall, AV blocking)
+      console.error('Error de red al contactar Worker:', networkErr.message);
+      return {
+        status: 'sin_conexion',
+        message: 'No se pudo conectar al servidor de verificación. Verifique su conexión a internet o que el antivirus no esté bloqueando la aplicación.'
+      };
     }
+
+    if (response.status === 401 || response.status === 403) {
+      // Worker rechazó la USB — no es error de conexión
+      console.warn('Worker rechazó la USB (HTTP', response.status, '). Hashes enviados:', driveHashes);
+      return {
+        status: 'usb_no_autorizada',
+        message: 'La USB insertada no está registrada como autorizada para esta aplicación.'
+      };
+    }
+
+    if (!response.ok) {
+      console.error('Worker respondió HTTP', response.status);
+      return {
+        status: 'sin_conexion',
+        message: `Error del servidor de verificación (HTTP ${response.status}). Intente de nuevo.`
+      };
+    }
+
     const arrayBuffer = await response.arrayBuffer();
     githubKey = Buffer.from(arrayBuffer);
     if (githubKey.length !== 16) {
