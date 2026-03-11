@@ -80,9 +80,13 @@ async function validate(encryptedScriptsDir, tempBaseDir) {
     if (response.status === 401 || response.status === 403) {
       // Worker rechazó la USB — no es error de conexión
       console.warn('Worker rechazó la USB (HTTP', response.status, '). Hashes enviados:', driveHashes);
+      const debugInfo = [
+        `Serial: ${usbResult.drive.serial || usbResult.drive.deviceId}`,
+        `Hashes: ${driveHashes.join(', ')}`
+      ].join(' | ');
       return {
         status: 'usb_no_autorizada',
-        message: 'La USB insertada no está registrada como autorizada para esta aplicación.'
+        message: `La USB insertada no está registrada como autorizada para esta aplicación. [DEBUG] ${debugInfo}`
       };
     }
 

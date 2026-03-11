@@ -136,6 +136,17 @@ const exeSizeMB = (fs.statSync(exePath).size / 1024 / 1024).toFixed(1);
 ok(`${exeName} (${exeSizeMB} MB)`);
 ok(`${exeName}.blockmap`);
 
+// Verificar que r-scripts fue incluido en el instalador
+const rScriptsBundled = path.join(distDir, 'win-unpacked', 'resources', 'r-scripts');
+if (!fs.existsSync(rScriptsBundled)) {
+  fail('r-scripts NO fue incluido en el instalador. Revisa extraResources en package.json.');
+}
+const encFiles = fs.readdirSync(rScriptsBundled).filter(f => f.endsWith('.enc'));
+if (encFiles.length === 0) {
+  fail('r-scripts existe pero no contiene archivos .enc — scripts no encriptados.');
+}
+ok(`r-scripts incluido con ${encFiles.length} archivo(s) .enc ✓`);
+
 
 // ─── PASO 6: Generar latest.yml ──────────────────────────────────────────────
 step(6, 'Generando latest.yml con SHA512 correcto');
