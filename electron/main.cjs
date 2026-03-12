@@ -932,7 +932,7 @@ ipcMain.handle('fusionar-csvs', async () => {
     fs.writeFileSync(csvTemp, contenidoFinal, 'utf8');
 
     const archivoFinal = path.join(outputDir, 'resultados_e14_FINAL.xlsx');
-    const wb = XLSX.read(contenidoFinal, { type: 'string', FS: ';', raw: false });
+    const wb = XLSX.read(contenidoFinal, { type: 'string', FS: ';', raw: true });
     XLSX.writeFile(wb, archivoFinal);
 
     // Eliminar CSV temporal
